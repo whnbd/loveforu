@@ -1,15 +1,25 @@
 const fullURL = window.location.href;
-console.log(fullURL);
 const searchParams = new URLSearchParams(window.location.search);
 
-const refTime = Number(searchParams.get('time'));
-const MAX_BOX =  Number(searchParams.get('num'));
-const name1 = searchParams.get('name');
+var refTime = Number(searchParams.get('time'));
+var MAX_BOX =  Number(searchParams.get('num'));
+var name1 = searchParams.get('name');
+
+if (name1 == null) {
+  name1 = "宝贝";
+}
+if (MAX_BOX == 0) {
+  MAX_BOX = 100;
+}
+
+if(refTime == 0)
+{
+  refTime = 0.5;
+}
+
 if (MAX_BOX > 600) {
   MAX_BOX = 600;
 }
-
-
 
 
 function heartPoints({ scale = 1, step = 0.02, centerX = 0, centerY = 0 } = {}) {
