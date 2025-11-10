@@ -1,3 +1,17 @@
+const fullURL = window.location.href;
+console.log(fullURL);
+const searchParams = new URLSearchParams(window.location.search);
+
+const refTime = Number(searchParams.get('time'));
+const MAX_BOX =  Number(searchParams.get('num'));
+const name1 = searchParams.get('name');
+if (MAX_BOX > 600) {
+  MAX_BOX = 600;
+}
+
+
+
+
 function heartPoints({ scale = 1, step = 0.02, centerX = 0, centerY = 0 } = {}) {
   const pts = [];
   for (let t = 0; t <= 2 * Math.PI; t += step) {
@@ -5,7 +19,7 @@ function heartPoints({ scale = 1, step = 0.02, centerX = 0, centerY = 0 } = {}) 
     const y = -(13 * Math.cos(t) -
                 5 * Math.cos(2 * t) -
                 2 * Math.cos(3 * t) -
-                Math.cos(4 * t));   // 负号让尖头朝上
+                Math.cos(4 * t));   // 负号让尖头朝上 ?time=0.5&num=520&name=hyq
     pts.push({
       x: centerX + x * scale,
       y: centerY + y * scale
@@ -15,31 +29,28 @@ function heartPoints({ scale = 1, step = 0.02, centerX = 0, centerY = 0 } = {}) 
 }
 const sweetCoupleWords = [
     "注意保暖~💗",
+    `每天都想和${name1}在一起~💝`,
     "好好吃饭哦~🎃",
     "早点休息🤗",
-    "我想你啦💓",
+    `我想你啦${name1}💓`,
     "抱抱你🤗",
     "晚安宝贝😽",
     "早安亲爱的💖",
     "有你真好🥰",
     "心想事成✨",
-    "我在等你~💞",
     "别太累啦~🎄",
     "多喝水哦🎈",
     "爱你每一天🥰",
-    "我好想你💖",
+    "我有亿点想你💖",
     "喜欢你😗",
     "辛苦啦，抱抱你~🤗",
     "天天开心💌",
     "今天要开心哦~💝",
     "心想事成✨",
 ];
-// /* ====== demo：浏览器 Console 验证 ====== */
-// console.table(heartPoints({ scale: 5 }));
 
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-// 3. 生成一个“安全”的 left/top
 function safePosition(elWidth, elHeight) {
     // 留 10px 边距，防止贴边
     const pad = 10;
@@ -51,22 +62,7 @@ function safePosition(elWidth, elHeight) {
         top : rand(pad, Math.max(pad, maxTop))
     };
 }
-// 情侣清新版：固定 45°，仅允许浅绿/浅粉/浅蓝/青色/浅紫
-// 全浅色 45° 渐变生成器
-function randomGradient({
-  type  = 'linear',
-  deg   = 45,
-  count = 2
-} = {}) {
-  const colors = [];
-  for (let i = 0; i < count; i++) {
-    const h = Math.floor(Math.random() * 360);        // 任意色相
-    const s = Math.floor(Math.random() * 21) + 20;    // 20-40% 低饱和
-    const l = Math.floor(Math.random() * 16) + 80;    // 80-95% 高明度
-    colors.push(`hsl(${h}, ${s}%, ${l}%)`);
-  }
-  return `linear-gradient(${deg}deg, ${colors.join(', ')})`;
-}
+
 // 生成全浅色渐变（可复用）
 function randomGradient({ type = 'linear', deg = 45, count = 2 } = {}) {
   const colors = [];
@@ -78,7 +74,7 @@ function randomGradient({ type = 'linear', deg = 45, count = 2 } = {}) {
   }
   return `linear-gradient(${deg}deg, ${colors.join(', ')})`;
 }
-const MAX_BOX = 100; 
+
 function showSweet() {
 
     if (document.querySelectorAll('.box').length >= MAX_BOX) return;
@@ -94,14 +90,14 @@ function showSweet() {
 
 
     const pad = 10; // 留边
-    const { width: w, height: h } = box.getBoundingClientRect();
+    // const { width: w, height: h } = box.getBoundingClientRect();
 
     const maxLeft = window.innerWidth - 200 - pad;
     const maxTop  = window.innerHeight - 70 - pad;
     const x = rand(pad, Math.max(pad, maxLeft));
     const y  = rand(pad, Math.max(pad, maxTop));
 
-    const angle = rand(-10, 10); // 角度限制
+    const angle = rand(-5, 5); // 角度限制
 
     box.style.left = x + 'px';
     box.style.top = y + 'px';
@@ -115,10 +111,9 @@ function showSweet() {
 
 
 /******************************************************************
- * 启动：先丢一句，然后每 3 秒再来一句https://gitcode.com/sxww1/loveWindow.git
- * https://gitee.com/sxww1/loveWindow.git
+ * 启动
  ******************************************************************/
 window.addEventListener('DOMContentLoaded', () => {
   showSweet();
-  setInterval(showSweet, 950);
+  setInterval(showSweet, refTime * 1000);
 });
